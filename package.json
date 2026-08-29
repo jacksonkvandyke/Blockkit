@@ -1,0 +1,38 @@
+{
+  "name": "blockkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Enforces a block-based code structure: every claim in a block's spec has exactly one test, and every test names a claim.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "blockkit": "bin/blockkit.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "blockkit": "node ./bin/blockkit.js"
+  },
+  "keywords": [
+    "cli",
+    "spec",
+    "contract",
+    "claude-code",
+    "hooks"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OWNER/blockkit.git"
+  }
+}
