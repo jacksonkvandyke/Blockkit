@@ -8,9 +8,9 @@ const IGNORED_DIRS = new Set([
 ])
 
 const SPEC_RE = /\.spec\.md$/i
-const TEST_FILE_RE = /\.(test|spec)\.[mc]?[jt]sx?$/i
+const TEST_FILE_RE = /\.(test|spec)\.([mc]?[jt]sx?|cs)$/i
 const TEST_DIR_RE = /^(__tests__|tests?)$/i
-const CODE_FILE_RE = /\.[mc]?[jt]sx?$|\.(vue|svelte|astro|css|scss|less)$/i
+const CODE_FILE_RE = /\.[mc]?[jt]sx?$|\.(vue|svelte|astro|css|scss|less|cs)$/i
 const MAX_DEPTH = 12
 
 function ignorable(name) {

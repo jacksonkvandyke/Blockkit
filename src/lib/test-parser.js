@@ -34,11 +34,14 @@ const OPTION_SKIP_RE = /\b(skip|todo)\s*:\s*(?!false\b)[^,\s}]/
 
 /**
  * The claim a test name declares, e.g. `C3`, or null when it declares none.
- * Accepted forms: `C3: ...`, `[C3] ...`, `C3 - ...`.
+ * Accepted forms: `C3: ...`, `[C3] ...`, `C3 - ...`, `C3_...`.
+ *
+ * The underscore is for languages that name a test with a method rather than a
+ * string, where `C3_restores_focus` is the idiomatic spelling.
  */
 export function parseClaimTag(name) {
   if (typeof name !== 'string') return null
-  const m = /^\s*(?:\[\s*C\s*(\d+)\s*\]|C\s*(\d+)\s*[:–—-])/i.exec(name)
+  const m = /^\s*(?:\[\s*C\s*(\d+)\s*\]|C\s*(\d+)\s*[:–—_-])/i.exec(name)
   if (!m) return null
   const digits = m[1] !== undefined ? m[1] : m[2]
   return `C${Number(digits)}`

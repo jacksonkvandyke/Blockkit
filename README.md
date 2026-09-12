@@ -62,17 +62,17 @@ blockkit is a private package. Install it straight from the repo, as a
 
 ```sh
 # HTTPS (uses your git credential helper / a PAT in CI)
-npm install --save-dev github:OWNER/blockkit
+npm install --save-dev github:jacksonkvandyke/Blockkit
 
 # SSH (uses your existing SSH key — usually the easiest for a private repo)
-npm install --save-dev git+ssh://git@github.com/OWNER/blockkit.git
+npm install --save-dev git+ssh://git@github.com/jacksonkvandyke/Blockkit.git
 ```
 
 Pin a tag or commit so a hook never changes underneath you:
 
 ```sh
-npm install --save-dev github:OWNER/blockkit#v0.1.0
-npm install --save-dev github:OWNER/blockkit#3f9a1c2
+npm install --save-dev github:jacksonkvandyke/Blockkit#v0.1.0
+npm install --save-dev github:jacksonkvandyke/Blockkit#3f9a1c2
 ```
 
 There is no build step, so no `prepare` script has to run at install time.
@@ -117,7 +117,7 @@ In CI, install with the same credentials as any other private dependency:
 For a one-off run in a repo that does not depend on it yet:
 
 ```sh
-npx github:OWNER/blockkit check
+npx github:jacksonkvandyke/Blockkit check
 ```
 
 ---
@@ -333,6 +333,26 @@ Recognised across node:test, Vitest and Jest:
 - the options object — `test('C1: …', { skip: true }, fn)` counts as skipped
 - tests inside a `describe.skip(…)` or `xdescribe(…)` — also skipped
 
+#### C# (xUnit / NUnit)
+
+A `.test.cs` file is read for attributes rather than calls, because that is how
+these frameworks declare a test. The claim comes from `DisplayName` when there
+is one and from the method name otherwise, so both spellings work:
+
+```csharp
+[Fact(DisplayName = "C3: restores focus to the trigger")]
+public void RestoresFocus() { }
+
+[Fact]
+public void C3_restores_focus_to_the_trigger() { }
+```
+
+Recognised: `[Fact]`, `[Theory]`, `[Test]`, `[TestCase]`, qualified
+(`[Xunit.Fact]`), and stacked with other attributes. `Skip = "…"` and NUnit's
+`[Ignore]` — including `[Test, Ignore("…")]` — count as skipped. Comments and
+string bodies are masked first, verbatim strings included, so neither a
+commented-out test nor `"[Fact]"` inside a literal is mistaken for one.
+
 `describe` names are not tests. Commented-out tests do not count, nor does a
 call written inside a string or a regex literal. A test whose name is a
 variable is reported rather than silently ignored.
@@ -342,6 +362,8 @@ variable is reported rather than silently ignored.
 The parsers are deliberately dependency-free, which means they are lexical, not
 full ASTs:
 
+- C# is read the same lexical way. A test whose `DisplayName` is built at
+  runtime rather than written as a literal falls back to the method name.
 - A block's implementation is never parsed — only its `*.spec.md` and its test
   files.
 - Pathological JSX *text* inside a test file (`<p>it ('x')</p>`) can look like a
@@ -356,6 +378,10 @@ full ASTs:
 ### Layout rules
 
 - A block is any directory under `blocks/` containing a `*.spec.md`.
+- Test files are `*.test.*` / `*.spec.*` with a JavaScript, TypeScript or C#
+  extension. A block's tests may sit beside its spec while the implementation
+  lives elsewhere in the repo, which is how a .NET project adopts blocks without
+  moving any source.
 - A directory without one is a grouping directory, so `blocks/forms/DatePicker`
   is a block called `forms/DatePicker`. A grouping directory may hold notes but
   not source files of its own — that would be code under `blocks/` with no

@@ -1,6 +1,15 @@
 import { readText } from './fsx.js'
 import { parseSpec } from './spec-parser.js'
+import { parseCSharpTestSource } from './test-parser-cs.js'
 import { parseTestSource } from './test-parser.js'
+
+/**
+ * The parser for a test file, chosen by extension. A language is supported
+ * when it has one; everything else is read as JavaScript or TypeScript.
+ */
+function parserFor(path) {
+  return /\.cs$/i.test(path) ? parseCSharpTestSource : parseTestSource
+}
 
 /**
  * Check one block: every claim in its contract summary must be proved by
@@ -52,7 +61,7 @@ export function verifyBlock(block, { allowSkipped = false } = {}) {
       push('unreadable-test', `could not read ${testPath}`)
       continue
     }
-    result.tests.push(...parseTestSource(source, testPath).tests)
+    result.tests.push(...parserFor(testPath)(source, testPath).tests)
   }
 
   if (block.testPaths.length === 0) {

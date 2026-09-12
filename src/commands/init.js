@@ -104,7 +104,7 @@ export async function init(argv) {
       'implement `gate` — your contracts would go unchecked, and the agent would',
       'never hear about it. Install it:',
       '',
-      '    npm install --save-dev github:OWNER/blockkit',
+      '    npm install --save-dev github:jacksonkvandyke/Blockkit',
     )
   }
 

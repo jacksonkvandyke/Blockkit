@@ -7,4 +7,5 @@ export { formatOrphans, formatResult, formatSummary, toJson } from './lib/report
 export { maskLiterals, stripComments } from './lib/scan.js'
 export { parseClaimId, parseSpec, splitRow } from './lib/spec-parser.js'
 export { parseClaimTag, parseTestSource } from './lib/test-parser.js'
+export { parseCSharpTestSource } from './lib/test-parser-cs.js'
 export { verifyBlock, verifyBlocks } from './lib/verify.js'
